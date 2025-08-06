@@ -6,9 +6,8 @@
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon server/index.js",
-    "client": "cd client && npm run dev",
     "build": "vite build",
-    "install-all": "npm install && cd client && npm install",
+    "install": "npm install",
     "start": "node server/index.js"
   },
   "dependencies": {
@@ -38,4 +37,5 @@
   "author": "ProductOwl Team",
   "license": "MIT"
 }
+
 

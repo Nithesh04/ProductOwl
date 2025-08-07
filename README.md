@@ -55,17 +55,17 @@ Demo
    cp client/.env.example client/.env 
    ```
    
-      ##### MongoDB connection string
+      #### MongoDB connection string
       MONGODB_URI=your_mongodb_connection_string_here
       
-      ##### SendGrid email settings
+      #### SendGrid email settings
       EMAIL_USER=your_email@example.com
       SENDGRID_API_KEY=your_sendgrid_api_key_here
       
-      ##### JWT Secret for authentication
+      #### JWT Secret for authentication
       JWT_SECRET=your_secure_jwt_secret_key
       
-      ##### Frontend environment (in /client/.env)
+      #### Frontend environment (in /client/.env)
       VITE_API_URL=http://localhost:5000/api
 
 

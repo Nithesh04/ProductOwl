@@ -39,42 +39,38 @@ A full-stack web application for tracking Amazon product prices and getting noti
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd productowl
+   cd ProductOwl
    ```
 
-2. **Install dependencies**
+2. **Install dependencies for both client and server**
    ```bash
-   npm run install-all
+   cd client
+   npm install
+   cd ../server
+   npm install
    ```
 
 3. **Environment Setup**
    ```bash
-   cp env.example .env
+   cp server/.env.example server/.env
+   cp client/.env.example client/.env # if needed
    ```
    
-   Edit `.env` file with your configuration:
-   ```env
-   # Server Configuration
-   PORT=5000
-   NODE_ENV=development
-   
-   # MongoDB Configuration
-   MONGODB_URI=mongodb://localhost:27017/productowl
-   
-   # Email Configuration (Gmail)
-   EMAIL_USER=your-email@gmail.com
-   EMAIL_PASS=your-app-password
-   
-   # Frontend Configuration
-   VITE_API_URL=http://localhost:5000/api
-   ```
+   Edit the `.env` files with your configuration as needed.
 
-4. **Start the application**
-   ```bash
-   npm run dev
-   ```
+4. **Start the applications (in two terminals):**
+   - **Terminal 1:**
+     ```bash
+     cd server
+     npm run dev
+     ```
+   - **Terminal 2:**
+     ```bash
+     cd client
+     npm run dev
+     ```
 
-   This will start both the backend server (port 5000) and frontend (port 3000).
+   The backend server will run on port 5000 and the frontend on port 3000 by default.
 
 ## 📧 Email Setup
 
@@ -177,7 +173,7 @@ The application runs daily price checks at 9 AM (IST):
 ### Backend Deployment
 1. Set up MongoDB Atlas or local MongoDB
 2. Configure environment variables
-3. Deploy to Heroku, Vercel, or your preferred platform
+3. For Render server-only deploy: set root to `server/`, Build: `npm ci --omit=dev`, Start: `node index.js`, `NODE_ENV=production`. Do not skip Chromium download if using Puppeteer.
 
 ### Frontend Deployment
 1. Build the application: `npm run build`

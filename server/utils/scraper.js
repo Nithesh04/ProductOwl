@@ -33,8 +33,10 @@ class AmazonScraper {
   }
 
   async init() {
+    const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH || undefined;
     this.browser = await puppeteer.launch({
       headless: 'new',
+      executablePath,
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',

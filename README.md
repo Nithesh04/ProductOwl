@@ -58,24 +58,22 @@ Demo
 3. **Environment Setup**
    ```bash
    cp server/.env.example server/.env
-   cp client/.env.example client/.env # if needed
+   cp client/.env.example client/.env 
    ```
    
-   Edit the `.env` files with your configuration as needed.
+      # MongoDB connection string
+      MONGODB_URI=your_mongodb_connection_string_here
+      
+      # SendGrid email settings
+      EMAIL_USER=your_email@example.com
+      SENDGRID_API_KEY=your_sendgrid_api_key_here
+      
+      # JWT Secret for authentication
+      JWT_SECRET=your_secure_jwt_secret_key
+      
+      # Frontend environment (in /client/.env)
+      VITE_API_URL=http://localhost:5000/api
 
-4. **Start the applications (in two terminals):**
-   - **Terminal 1:**
-     ```bash
-     cd server
-     npm run dev
-     ```
-   - **Terminal 2:**
-     ```bash
-     cd client
-     npm run dev
-     ```
-
-   The backend server will run on port 5000 and the frontend on port 3000 by default.
 
 ## 📧 Email Setup
 

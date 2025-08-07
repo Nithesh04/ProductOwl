@@ -12,7 +12,7 @@ A full-stack web application for tracking Amazon product prices and getting noti
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **React js 
+- React js 
 
 ### Backend
 - **Node.js** with Express.js

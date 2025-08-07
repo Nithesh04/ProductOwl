@@ -18,7 +18,7 @@ A full-stack web application for tracking Amazon product prices and getting noti
 - **Node.js** with Express.js
 - **MongoDB** with Mongoose ODM
 - **Puppeteer** for web scraping
-- **Nodemailer** for email notifications
+- **SendGrid** for email notifications
 - **Node-Cron** for scheduled tasks
 
 ## 🚀 Quick Start

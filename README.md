@@ -113,7 +113,6 @@ To enable email notifications, you need to:
 ### Tracking
 - `POST /api/tracking/subscribe` - Subscribe to price alerts
 - `GET /api/tracking/user/:email` - Get user's tracking subscriptions
-- `PUT /api/tracking/unsubscribe/:id` - Unsubscribe from tracking
 - `DELETE /api/tracking/:id` - Delete tracking subscription
 
 ## 📊 Database Schema

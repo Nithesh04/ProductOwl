@@ -5,20 +5,14 @@ A full-stack web application for tracking Amazon product prices and getting noti
 ## ✨ Features
 
 - **Smart Price Tracking**: Scrape Amazon product data including images, titles, and prices
-- **Price History**: Maintain comprehensive price history with highest, lowest, and average prices
-- **Email Notifications**: Get notified when prices drop by 40% or more
-- **Modern UI**: Clean, dark-themed interface with responsive design
+- **Email Notifications**: Get notified when prices drop by 30% or more
 - **Real-time Updates**: Daily CRON jobs check for price changes
-- **No Authentication Required**: Simple and user-friendly experience
+
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **React 18** with Vite for fast development
-- **Styled Components** for modern styling
-- **React Router** for navigation
-- **React Icons** for beautiful icons
-- **Framer Motion** for smooth animations
+- **React js 
 
 ### Backend
 - **Node.js** with Express.js

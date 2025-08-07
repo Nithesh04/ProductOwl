@@ -5,10 +5,10 @@
   "main": "server/index.js",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "install": "npm install",
     "server": "nodemon server/index.js",
     "client": "cd client && npm run dev",
     "build": "cd client && npm run build",
-    "install": "npm install",
     "start": "node index.js"
   },
   "dependencies": {
@@ -38,6 +38,7 @@
   "author": "Nithesh G",
   "license": "MIT"
 }
+
 
 
 

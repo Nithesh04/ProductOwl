@@ -30,9 +30,14 @@ A full-stack web application for tracking Amazon product prices and getting noti
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- MongoDB (local or cloud)
+- Node.js
+- MongoDB 
 - Gmail account for email notifications
+
+Demo
+<img width="1906" height="923" alt="Screenshot 2025-08-07 163618" src="https://github.com/user-attachments/assets/cc2ec17d-d872-409f-9d95-0c3425de9f01" />
+<img width="1895" height="920" alt="Screenshot 2025-08-07 163636" src="https://github.com/user-attachments/assets/f411ebdb-0131-406a-ae57-d5a945cfa9fe" />
+
 
 ### Installation
 
@@ -82,6 +87,7 @@ To enable email notifications, you need to:
    - Security → 2-Step Verification → App passwords
    - Generate a password for "Mail"
 3. **Update your `.env` file** with the app password
+4. or use sendgrid email
 
 ## 🎯 Usage
 
@@ -159,56 +165,9 @@ The application runs daily price checks at 9 AM (IST):
 - Updates price history and statistics
 - Sends email notifications for significant price drops (≥40%)
 
-## 🎨 UI Features
-
-- **Dark Theme**: Modern dark interface with blue accents
-- **Responsive Design**: Works perfectly on desktop and mobile
-- **Smooth Animations**: Hover effects and transitions
-- **Loading States**: Spinners and progress indicators
-- **Error Handling**: User-friendly error messages
-- **Modal Dialogs**: Clean tracking subscription flow
-
-## 🚀 Deployment
-
-### Backend Deployment
-1. Set up MongoDB Atlas or local MongoDB
-2. Configure environment variables
-3. Deploy to Heroku, Vercel, or your preferred platform
-
-### Frontend Deployment
-1. Build the application: `npm run build`
-2. Deploy the `dist` folder to Netlify, Vercel, or your preferred platform
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
 ## 📝 License
 
 This project is licensed under the MIT License.
 
-## 🆘 Support
 
-If you encounter any issues:
-1. Check the console for error messages
-2. Verify your environment variables
-3. Ensure MongoDB is running
-4. Check your email configuration
-
-## 🔮 Future Enhancements
-
-- [ ] Price history charts and graphs
-- [ ] Multiple email providers support
-- [ ] Push notifications
-- [ ] Product categories and filters
-- [ ] Price prediction algorithms
-- [ ] Social sharing features
-- [ ] Mobile app development
-
----
-
-Built with ❤️ by the ProductOwl Team 
+author: Nithesh G

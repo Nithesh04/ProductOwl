@@ -2,7 +2,7 @@
   "name": "productowl",
   "version": "1.0.0",
   "description": "A full-stack web application for tracking Amazon product prices",
-  "main": "server/index.js",
+  "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "node index.js",

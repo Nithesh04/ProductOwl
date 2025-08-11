@@ -2,7 +2,7 @@
   "name": "productowl",
   "version": "1.0.0",
   "description": "A full-stack web application for tracking Amazon product prices",
-  "main": "server/index.js",
+  "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon server/index.js",
@@ -11,7 +11,9 @@
     "install-all": "npm install && cd client && npm install",
     "start": "node server/index.js"
   },
-  
+  "puppeteer": {
+    "skip_chromium_download": true
+  },
   "dependencies": {
     "@sendgrid/mail": "^8.1.5",
     "axios": "^1.5.0",
@@ -36,6 +38,6 @@
     "price",
     "scraper"
   ],
-  "author": "ProductOwl Team",
+  "author": "Nithesh G",
   "license": "MIT"
 }

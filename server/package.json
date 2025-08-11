@@ -1,21 +1,11 @@
 {
-  "name": "productowl",
+  "name": "productowl-server",
   "version": "1.0.0",
-  "description": "A full-stack web application for tracking Amazon product prices",
-  "main": "server/index.js",
-  "engines": {
-    "node": "20.x"
-  },
+  "description": "Backend for ProductOwl",
+  "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "nodemon server/index.js",
-    "client": "cd client && npm run dev",
-    "build": "cd client && npm ci && npm run build",
-    "install-all": "npm ci && cd client && npm ci",
-    "start": "node server/index.js"
-  },
-  "puppeteer": {
-    "skip_chromium_download": true
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.5",
@@ -28,19 +18,12 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.0",
     "node-cron": "^3.0.3",
-    "puppeteer": "^21.3.6"
+    "puppeteer": "^21.11.0"
   },
   "devDependencies": {
-    "concurrently": "^8.2.0",
     "nodemon": "^3.0.1"
   },
-  "keywords": [
-    "product",
-    "tracking",
-    "amazon",
-    "price",
-    "scraper"
-  ],
-  "author": "Nithesh G",
-  "license": "MIT"
+  "puppeteer": {
+    "skip_chromium_download": true
+  }
 }

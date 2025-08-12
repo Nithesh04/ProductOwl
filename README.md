@@ -5,35 +5,61 @@ A full-stack web application for tracking Amazon product prices and getting noti
 ## ✨ Features
 
 - **Smart Price Tracking**: Scrape Amazon product data including images, titles, and prices
+<<<<<<< HEAD
 - **Price History**: Maintain comprehensive price history with highest, lowest, and average prices
 - **Email Notifications**: Get notified when prices drop by 40% or more
 - **Modern UI**: Clean, dark-themed interface with responsive design
 - **Real-time Updates**: Daily CRON jobs check for price changes
 - **No Authentication Required**: Simple and user-friendly experience
+=======
+- **Email Notifications**: Get notified when prices drop by 30% or more
+- **Real-time Updates**: Daily CRON jobs check for price changes
+
+>>>>>>> 3dcca28936621dc0e4e51a24817028ac915b02e2
 
 ## 🛠️ Tech Stack
 
 ### Frontend
+<<<<<<< HEAD
 - **React 18** with Vite for fast development
 - **Styled Components** for modern styling
 - **React Router** for navigation
 - **React Icons** for beautiful icons
 - **Framer Motion** for smooth animations
+=======
+- React js 
+>>>>>>> 3dcca28936621dc0e4e51a24817028ac915b02e2
 
 ### Backend
 - **Node.js** with Express.js
 - **MongoDB** with Mongoose ODM
 - **Puppeteer** for web scraping
+<<<<<<< HEAD
 - **Nodemailer** for email notifications
+=======
+- **SendGrid** for email notifications
+>>>>>>> 3dcca28936621dc0e4e51a24817028ac915b02e2
 - **Node-Cron** for scheduled tasks
 
 ## 🚀 Quick Start
 
 ### Prerequisites
+<<<<<<< HEAD
 - Node.js (v16 or higher)
 - MongoDB (local or cloud)
 - Gmail account for email notifications
 
+=======
+- Node.js
+- MongoDB 
+- Gmail account for email notifications
+
+Demo
+<img width="1906" height="923" alt="Screenshot 2025-08-07 163618" src="https://github.com/user-attachments/assets/cc2ec17d-d872-409f-9d95-0c3425de9f01" />
+<img width="1895" height="920" alt="Screenshot 2025-08-07 163636" src="https://github.com/user-attachments/assets/f411ebdb-0131-406a-ae57-d5a945cfa9fe" />
+
+
+>>>>>>> 3dcca28936621dc0e4e51a24817028ac915b02e2
 ### Installation
 
 1. **Clone the repository**
@@ -53,6 +79,7 @@ A full-stack web application for tracking Amazon product prices and getting noti
 3. **Environment Setup**
    ```bash
    cp server/.env.example server/.env
+<<<<<<< HEAD
    cp client/.env.example client/.env # if needed
    ```
    
@@ -71,6 +98,24 @@ A full-stack web application for tracking Amazon product prices and getting noti
      ```
 
    The backend server will run on port 5000 and the frontend on port 3000 by default.
+=======
+   cp client/.env.example client/.env 
+   ```
+   
+      #### MongoDB connection string
+      MONGODB_URI=your_mongodb_connection_string_here
+      
+      #### SendGrid email settings
+      EMAIL_USER=your_email@example.com
+      SENDGRID_API_KEY=your_sendgrid_api_key_here
+      
+      #### JWT Secret for authentication
+      JWT_SECRET=your_secure_jwt_secret_key
+      
+      #### Frontend environment (in /client/.env)
+      VITE_API_URL=http://localhost:5000/api
+
+>>>>>>> 3dcca28936621dc0e4e51a24817028ac915b02e2
 
 ## 📧 Email Setup
 
@@ -82,6 +127,10 @@ To enable email notifications, you need to:
    - Security → 2-Step Verification → App passwords
    - Generate a password for "Mail"
 3. **Update your `.env` file** with the app password
+<<<<<<< HEAD
+=======
+4. or use sendgrid email
+>>>>>>> 3dcca28936621dc0e4e51a24817028ac915b02e2
 
 ## 🎯 Usage
 
@@ -115,7 +164,10 @@ To enable email notifications, you need to:
 ### Tracking
 - `POST /api/tracking/subscribe` - Subscribe to price alerts
 - `GET /api/tracking/user/:email` - Get user's tracking subscriptions
+<<<<<<< HEAD
 - `PUT /api/tracking/unsubscribe/:id` - Unsubscribe from tracking
+=======
+>>>>>>> 3dcca28936621dc0e4e51a24817028ac915b02e2
 - `DELETE /api/tracking/:id` - Delete tracking subscription
 
 ## 📊 Database Schema
@@ -159,6 +211,7 @@ The application runs daily price checks at 9 AM (IST):
 - Updates price history and statistics
 - Sends email notifications for significant price drops (≥40%)
 
+<<<<<<< HEAD
 ## 🎨 UI Features
 
 - **Dark Theme**: Modern dark interface with blue accents
@@ -187,10 +240,13 @@ The application runs daily price checks at 9 AM (IST):
 4. Test thoroughly
 5. Submit a pull request
 
+=======
+>>>>>>> 3dcca28936621dc0e4e51a24817028ac915b02e2
 ## 📝 License
 
 This project is licensed under the MIT License.
 
+<<<<<<< HEAD
 ## 🆘 Support
 
 If you encounter any issues:
@@ -212,3 +268,7 @@ If you encounter any issues:
 ---
 
 Built with ❤️ by the ProductOwl Team 
+=======
+
+author: Nithesh G
+>>>>>>> 3dcca28936621dc0e4e51a24817028ac915b02e2

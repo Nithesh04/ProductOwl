@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 const puppeteer = require('puppeteer-core');
 const chromium = require('@sparticuz/chromium');
 
 // Check if we're in a serverless environment
 const isServerless = process.env.NODE_ENV === 'production' || process.env.RENDER || process.env.VERCEL;
+=======
+const puppeteer = require('puppeteer');
+>>>>>>> 3dcca28936621dc0e4e51a24817028ac915b02e2
 
 function extractPrice(priceString) {
   if (!priceString) return 0;
@@ -37,6 +41,7 @@ class AmazonScraper {
   }
 
   async init() {
+
     let launchOptions;
     
     if (isServerless) {
@@ -93,6 +98,22 @@ class AmazonScraper {
     }
     
     this.browser = await puppeteer.launch(launchOptions);
+
+    this.browser = await puppeteer.launch({
+      headless: 'new',
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--disable-gpu',
+        '--disable-web-security',
+        '--disable-features=VizDisplayCompositor'
+      ]
+    });
+
   }
 
   async close() {

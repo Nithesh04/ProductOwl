@@ -3,11 +3,8 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cron = require('node-cron');
-
 const path = require('path');
 const fs = require('fs');
-
-const path = require('path'); // Added missing import for path
 
 
 
@@ -50,7 +47,7 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'ProductOwl API is running' });
 });
 
-<<<<<<< HEAD
+
 // Serve React app in production if build exists
 if (process.env.NODE_ENV === 'production') {
   const clientDistPath = path.resolve(__dirname, '..', 'client', 'dist');
@@ -63,14 +60,6 @@ if (process.env.NODE_ENV === 'production') {
   } else {
     console.log('client/dist not found; serving API only');
   }
-=======
-// Serve React app in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/dist'));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
-  });
->>>>>>> 3dcca28936621dc0e4e51a24817028ac915b02e2
 }
 
 // Start CRON job to check prices daily at 7 AM

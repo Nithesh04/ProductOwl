@@ -1,4 +1,8 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
+const chromium = require('@sparticuz/chromium');
+
+// Check if we're in a serverless environment
+const isServerless = process.env.NODE_ENV === 'production' || process.env.RENDER || process.env.VERCEL;
 
 function extractPrice(priceString) {
   if (!priceString) return 0;
@@ -33,22 +37,62 @@ class AmazonScraper {
   }
 
   async init() {
-    const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH || undefined;
-    this.browser = await puppeteer.launch({
-      headless: 'new',
-      executablePath,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--no-first-run',
-        '--no-zygote',
-        '--disable-gpu',
-        '--disable-web-security',
-        '--disable-features=VizDisplayCompositor'
-      ]
-    });
+    let launchOptions;
+    
+    if (isServerless) {
+      // Use @sparticuz/chromium for serverless environments
+      const executablePath = await chromium.executablePath();
+      launchOptions = {
+        headless: chromium.headless,
+        executablePath,
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        ignoreHTTPSErrors: true
+      };
+    } else {
+      // Use system Chrome for development
+      // Try to find Chrome in common locations
+      const possiblePaths = [
+        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+        'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+        process.env.CHROME_PATH
+      ].filter(Boolean);
+      
+      let executablePath;
+      for (const path of possiblePaths) {
+        try {
+          const fs = require('fs');
+          if (fs.existsSync(path)) {
+            executablePath = path;
+            break;
+          }
+        } catch (e) {
+          // Continue to next path
+        }
+      }
+      
+      if (!executablePath) {
+        throw new Error('Chrome not found. Please install Chrome or set CHROME_PATH environment variable.');
+      }
+      
+      launchOptions = {
+        headless: 'new',
+        executablePath,
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-accelerated-2d-canvas',
+          '--no-first-run',
+          '--no-zygote',
+          '--disable-gpu',
+          '--disable-web-security',
+          '--disable-features=VizDisplayCompositor'
+        ]
+      };
+    }
+    
+    this.browser = await puppeteer.launch(launchOptions);
   }
 
   async close() {

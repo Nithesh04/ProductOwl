@@ -34,6 +34,13 @@ api.interceptors.response.use(
   },
   (error) => {
     console.error('Response error:', error.response?.status, error.response?.data);
+    
+    // Handle HTML error responses (like 404 pages)
+    if (error.response?.data && typeof error.response.data === 'string' && error.response.data.includes('<html')) {
+      console.error('Received HTML error page instead of JSON');
+      error.message = 'Server returned an error page. Please check your API configuration.';
+    }
+    
     return Promise.reject(error);
   }
 );
@@ -72,6 +79,24 @@ export const trackingAPI = {
   
   // Get all tracking (admin)
   getAll: () => api.get('/tracking'),
+};
+
+// Auth API
+export const authAPI = {
+  // Register user
+  register: (userData) => api.post('/auth/register', userData),
+  
+  // Login user
+  login: (credentials) => api.post('/auth/login', credentials),
+  
+  // Get user profile
+  getProfile: () => api.get('/auth/profile'),
+  
+  // Update user profile
+  updateProfile: (userData) => api.put('/auth/profile', userData),
+  
+  // Change password
+  changePassword: (passwordData) => api.put('/auth/change-password', passwordData),
 };
 
 // Health check

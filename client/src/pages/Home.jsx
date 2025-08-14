@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import SearchBar from '../components/SearchBar';
 import ProductCard from '../components/ProductCard';
 import { FaEye, FaSearch, FaBell } from 'react-icons/fa';
+import { productsAPI } from '../services/api';
 
 const HomeContainer = styled.div`
   min-height: 100vh;
@@ -162,22 +163,9 @@ const Home = ({ user }) => {
     try {
       setLoading(true);
       setError('');
-      const token = localStorage.getItem('token');
-      const headers = { 'Content-Type': 'application/json' };
       
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-      
-      const response = await fetch('/api/products', {
-        headers
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
+      const response = await productsAPI.getAll();
+      const data = response.data;
       
       const validProducts = Array.isArray(data) 
         ? data.filter(product => product && product._id && typeof product._id === 'string')
@@ -185,7 +173,8 @@ const Home = ({ user }) => {
       
       setProducts(validProducts);
     } catch (err) {
-      setError(err.message || 'Failed to fetch products. Please try again later.');
+      console.error('Fetch products error:', err);
+      setError(err.response?.data?.error || err.message || 'Failed to fetch products. Please try again later.');
       setProducts([]);
     } finally {
       setLoading(false);

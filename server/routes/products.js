@@ -6,7 +6,7 @@ const scraper = require('../utils/scraper');
 const auth = require('../middleware/auth');
 
 // Get all products (for non-authenticated users) or user's tracked products (for authenticated users)
-router.get('/', async (req, res) => {
+router.get(['/', ''], async (req, res) => {
   try {
     // Check if user is authenticated
     const token = req.header('Authorization')?.replace('Bearer ', '');
@@ -63,6 +63,11 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.options('/scrape', (req, res) => {
+  res.setHeader('Access-Control-Allow-Methods', 'POST');
+  res.status(204).end();
+});
+
 // Scrape and add new product
 router.post('/scrape', async (req, res) => {
   try {
@@ -117,6 +122,7 @@ router.post('/scrape', async (req, res) => {
     });
   }
 });
+
 
 // Update product price
 router.put('/:id/price', async (req, res) => {

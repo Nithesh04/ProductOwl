@@ -1,49 +1,25 @@
+// src/services/api.js
 import axios from 'axios';
 
-// Use VITE_API_URL (with underscore, not hyphen)
+// Configuration
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+const API_TIMEOUT = 15000; // 15 seconds timeout
 
-console.log('API Base URL:', API_BASE_URL); // Debug log
-
-// Validate API base URL
-if (!API_BASE_URL.includes('http') && !API_BASE_URL.startsWith('/')) {
-  console.error('Invalid API_BASE_URL:', API_BASE_URL);
-  console.error('Please set VITE_API_URL to a valid URL (e.g., https://your-server.com/api)');
-}
-
-// Utility function to validate API responses
-const validateResponse = (response) => {
-  // Check if response data is a string that looks like HTML
-  if (typeof response.data === 'string' && response.data.includes('<html')) {
-    throw new Error('Server returned an HTML error page instead of JSON. Please check your API configuration.');
-  }
-  
-  // Check if response data is valid JSON
-  if (response.data === null || response.data === undefined) {
-    throw new Error('Server returned empty response.');
-  }
-  
-  return response;
-};
-
+// Initialize axios instance
 const api = axios.create({
   baseURL: API_BASE_URL,
+  timeout: API_TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
   },
-  // Add timeout and better error handling
-  timeout: 15000, // Increased timeout for scraping operations
-  // Add retry configuration
-  retry: 2,
-  retryDelay: 1000,
 });
 
-// Add request interceptor for debugging and auth
+// Request interceptor for auth and logging
 api.interceptors.request.use(
   (config) => {
-    console.log('Making request to:', config.baseURL + config.url);
+    console.log(`[API] Request: ${config.method?.toUpperCase()} ${config.url}`);
     
-    // Add Authorization header if token exists
+    // Attach auth token if available
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -52,144 +28,85 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.error('Request error:', error);
+    console.error('[API] Request error:', error);
     return Promise.reject(error);
   }
 );
 
-// Add response interceptor for debugging
+// Response interceptor for error handling
 api.interceptors.response.use(
   (response) => {
-    console.log('Response received:', response.status);
-    return validateResponse(response);
+    console.log(`[API] Response: ${response.status} ${response.config.url}`);
+    return response.data;
   },
   (error) => {
-    console.error('Response error:', error.response?.status, error.response?.data);
-    
-    // Track errors in localStorage for debugging
-    const errorInfo = {
-      timestamp: new Date().toISOString(),
-      url: error.config?.url,
-      method: error.config?.method,
+    const errorData = {
       status: error.response?.status,
       message: error.message,
-      data: error.response?.data
+      url: error.config?.url,
+      timestamp: new Date().toISOString(),
     };
-    
-    const existingErrors = JSON.parse(localStorage.getItem('api_errors') || '[]');
-    existingErrors.push(errorInfo);
-    localStorage.setItem('api_errors', JSON.stringify(existingErrors.slice(-10))); // Keep last 10 errors
-    
-    // Handle HTML error responses (like 404 pages)
-    if (error.response?.data && typeof error.response.data === 'string' && error.response.data.includes('<html')) {
-      console.error('Received HTML error page instead of JSON');
-      error.message = 'Server returned an error page. Please check your API configuration.';
+
+    console.error('[API] Response error:', errorData);
+
+    // Handle specific error cases
+    if (error.response?.data?.includes('<html')) {
+      error.message = 'Server returned HTML error page. Check API configuration.';
+    } else if (error.code === 'ECONNABORTED') {
+      error.message = 'Request timeout. Please try again.';
+    } else if (!error.response) {
+      error.message = 'Network error. Check your connection.';
+    } else {
+      error.message = error.response.data?.message || error.message;
     }
-    
-    // Handle network errors
-    if (error.code === 'NETWORK_ERROR' || error.code === 'ERR_NETWORK') {
-      error.message = 'Network error. Please check your internet connection and try again.';
-    }
-    
-    // Handle timeout errors
-    if (error.code === 'ECONNABORTED') {
-      error.message = 'Request timed out. Please try again.';
-    }
-    
-    // Handle CORS errors
-    if (error.message && error.message.includes('CORS')) {
-      error.message = 'CORS error. Please check your server configuration.';
-    }
-    
+
+    // Store last 5 errors for debugging
+    const errors = JSON.parse(localStorage.getItem('apiErrors') || '[]');
+    localStorage.setItem('apiErrors', JSON.stringify([errorData, ...errors].slice(0, 5)));
+
     return Promise.reject(error);
   }
 );
 
-// Products API
-export const productsAPI = {
-  // Get all products
-  getAll: () => api.get('/products'),
-  
-  // Get a specific product
-  getById: (id) => api.get(`/products/${id}`),
-  
-  // Scrape and add new product
-  scrapeProduct: (amazonUrl) => api.post('/products/scrape', { amazonUrl }),
-  
-  // Update product price
-  updatePrice: (id) => api.put(`/products/${id}/price`),
-  
-  // Delete product
-  delete: (id) => api.delete(`/products/${id}`),
+// API Endpoints
+const API = {
+  // Products
+  products: {
+    getAll: () => api.get('/products'),
+    getById: (id) => api.get(`/products/${id}`),
+    scrape: (amazonUrl) => api.post('/products/scrape', { amazonUrl }),
+    updatePrice: (id) => api.put(`/products/${id}/price`),
+    delete: (id) => api.delete(`/products/${id}`),
+  },
+
+  // Auth
+  auth: {
+    register: (userData) => api.post('/auth/register', userData),
+    login: (credentials) => api.post('/auth/login', credentials),
+    profile: () => api.get('/auth/profile'),
+    updateProfile: (userData) => api.put('/auth/profile', userData),
+    changePassword: (passwordData) => api.put('/auth/change-password', passwordData),
+  },
+
+  // Tracking
+  tracking: {
+    getAll: () => api.get('/tracking'),
+    getByUser: (userId) => api.get(`/tracking/user/${userId}`),
+    create: (data) => api.post('/tracking', data),
+    update: (id, data) => api.put(`/tracking/${id}`, data),
+    delete: (id) => api.delete(`/tracking/${id}`),
+  },
+
+  // System
+  health: () => api.get('/health'),
+  debug: () => api.get('/debug'),
 };
 
-// Tracking API
-export const trackingAPI = {
-  // Subscribe to tracking
-  subscribe: (email, productId) => api.post('/tracking/subscribe', { email, productId }),
-  
-  // Get user's tracking subscriptions
-  getUserTracking: (email) => api.get(`/tracking/user/${email}`),
-  
-  // Unsubscribe from tracking
-  unsubscribe: (id) => api.put(`/tracking/unsubscribe/${id}`),
-  
-  // Delete tracking subscription
-  delete: (id) => api.delete(`/tracking/${id}`),
-  
-  // Get all tracking (admin)
-  getAll: () => api.get('/tracking'),
-};
-
-// Auth API
-export const authAPI = {
-  // Register user
-  register: (userData) => api.post('/auth/register', userData),
-  
-  // Login user
-  login: (credentials) => api.post('/auth/login', credentials),
-  
-  // Get user profile
-  getProfile: () => api.get('/auth/profile'),
-  
-  // Update user profile
-  updateProfile: (userData) => api.put('/auth/profile', userData),
-  
-  // Change password
-  changePassword: (passwordData) => api.put('/auth/change-password', passwordData),
-};
-
-// Health check
-export const healthAPI = {
-  check: () => api.get('/health'),
-  
-  // Test API connectivity
-  testConnection: async () => {
-    try {
-      const response = await api.get('/health');
-      console.log('API connection test successful:', response.data);
-      return { success: true, data: response.data };
-    } catch (error) {
-      console.error('API connection test failed:', error);
-      return { 
-        success: false, 
-        error: error.message,
-        details: {
-          status: error.response?.status,
-          statusText: error.response?.statusText,
-          data: error.response?.data
-        }
-      };
-    }
-  }
-};
-
-// Test API connection on startup
-if (typeof window !== 'undefined') {
-  // Only run in browser environment
-  setTimeout(() => {
-    healthAPI.testConnection();
-  }, 1000);
+// Test connection on app startup
+if (import.meta.env.PROD) {
+  API.health()
+    .then(() => console.log('[API] Connection successful'))
+    .catch(() => console.warn('[API] Connection test failed'));
 }
 
-export default api; 
+export default API;

@@ -64,7 +64,7 @@ function App() {
   }
 
   return (
-    <Router>
+    
       <AppContainer>
         <Header user={user} onLogout={handleLogout} />
         <MainContent>
@@ -81,7 +81,7 @@ function App() {
         </MainContent>
         <DebugInfo />
       </AppContainer>
-    </Router>
+    
   );
 }
 

@@ -6,7 +6,7 @@ const scraper = require('../utils/scraper');
 const auth = require('../middleware/auth');
 
 // Get all products (for non-authenticated users) or user's tracked products (for authenticated users)
-router.get('/', async (req, res) => {
+router.get(['/', ''], async (req, res) => {
   try {
     // Check if user is authenticated
     const token = req.header('Authorization')?.replace('Bearer ', '');

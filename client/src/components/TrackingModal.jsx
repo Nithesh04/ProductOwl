@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaTimes, FaEnvelope, FaBell, FaSpinner } from 'react-icons/fa';
+import { trackingAPI } from '../services/api';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -177,35 +178,20 @@ const TrackingModal = ({ isOpen, onClose, productId, productTitle, user }) => {
     e.preventDefault();
     
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('Please log in to track products');
-      }
-  
-      // Use absolute URL in development
-      const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await fetch(`${API_BASE}/tracking/subscribe`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ 
-          productId,
-          email: user.email 
-        }),
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to subscribe');
-      }
-  
-      const data = await response.json();
+      setIsLoading(true);
+      setError('');
+      setSuccess('');
+      
+      const response = await trackingAPI.subscribe(user.email, productId);
+      const data = response.data;
+      
       setSuccess('Successfully subscribed to tracking!');
       
     } catch (error) {
-      setError(error.message);
+      console.error('Tracking subscription error:', error);
+      setError(error.response?.data?.error || error.message || 'Failed to subscribe to tracking');
+    } finally {
+      setIsLoading(false);
     }
   };
 

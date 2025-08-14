@@ -28,7 +28,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({
   origin: [
     process.env.CLIENT_URL,
-    'https://product-owl-eight.vercel.app',
+    'https://product-owl-nine.vercel.app',
     'http://localhost:5173', // For local development
     'http://localhost:3000'  // Alternative local port
   ],

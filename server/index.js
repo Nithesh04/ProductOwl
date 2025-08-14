@@ -52,8 +52,8 @@ app.use(cors({
     return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'], // Added PATCH
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'] // Added X-Requested-Wit
 }));
 app.use(express.json());
 app.use(express.static('public'));

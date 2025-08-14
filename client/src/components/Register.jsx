@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaEye, FaEyeSlash, FaEnvelope, FaLock, FaUser } from 'react-icons/fa';
+import { authAPI } from '../services/api';
 
 const RegisterContainer = styled.div`
   display: flex;
@@ -220,23 +221,12 @@ const Register = ({ onRegister, onSwitchToLogin }) => {
     setSuccess('');
 
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password
-        }),
+      const response = await authAPI.register({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Registration failed');
-      }
+      const data = response.data;
 
       setSuccess('Registration successful! Please sign in.');
       
@@ -249,7 +239,8 @@ const Register = ({ onRegister, onSwitchToLogin }) => {
         onRegister(data.user, data.token);
       }
     } catch (err) {
-      setError(err.message);
+      console.error('Registration error:', err);
+      setError(err.response?.data?.error || err.message || 'Registration failed');
     } finally {
       setLoading(false);
     }

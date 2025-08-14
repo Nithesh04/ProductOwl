@@ -6,7 +6,7 @@ const scraper = require('../utils/scraper');
 const auth = require('../middleware/auth');
 
 // Get all products (for non-authenticated users) or user's tracked products (for authenticated users)
-router.get('/products', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     // Check if user is authenticated
     const token = req.header('Authorization')?.replace('Bearer ', '');
@@ -50,7 +50,7 @@ router.get('/products', async (req, res) => {
 });
 
 // Get a specific product
-router.get('/products/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {
@@ -69,7 +69,7 @@ router.options('/scrape', (req, res) => {
 });
 
 // Scrape and add new product
-router.post('/products/scrape', async (req, res) => {
+router.post('/scrape', async (req, res) => {
   try {
     const { amazonUrl } = req.body;
 

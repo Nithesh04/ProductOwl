@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // Configuration
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://productowl.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://productowl.onrender.com/api';
 const API_TIMEOUT = 15000; // 15 seconds timeout
 
 // Initialize axios instance

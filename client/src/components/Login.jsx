@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaEye, FaEyeSlash, FaEnvelope, FaLock } from 'react-icons/fa';
+import { authAPI } from '../services/api';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -185,19 +186,8 @@ const Login = ({ onLogin, onSwitchToRegister }) => {
     setSuccess('');
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
+      const response = await authAPI.login(formData);
+      const data = response.data;
 
       setSuccess('Login successful!');
       
@@ -210,7 +200,8 @@ const Login = ({ onLogin, onSwitchToRegister }) => {
         onLogin(data.user, data.token);
       }
     } catch (err) {
-      setError(err.message);
+      console.error('Login error:', err);
+      setError(err.response?.data?.error || err.message || 'Login failed');
     } finally {
       setLoading(false);
     }

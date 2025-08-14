@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaSearch, FaSpinner } from 'react-icons/fa';
+import { productsAPI } from '../services/api';
 
 const SearchContainer = styled.div`
   max-width: 600px;
@@ -103,26 +104,8 @@ const SearchBar = ({ onProductScraped, user }) => {
     setSuccess('');
 
     try {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Content-Type': 'application/json',
-      };
-      
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-      
-      const response = await fetch('/api/products/scrape', {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({ amazonUrl: url.trim() }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to scrape product');
-      }
+      const response = await productsAPI.scrapeProduct(url.trim());
+      const data = response.data;
 
       setSuccess(data.message);
       setUrl('');
@@ -131,7 +114,8 @@ const SearchBar = ({ onProductScraped, user }) => {
         onProductScraped(data.product);
       }
     } catch (err) {
-      setError(err.message);
+      console.error('Scraping error:', err);
+      setError(err.response?.data?.error || err.message || 'Failed to scrape product');
     } finally {
       setIsLoading(false);
     }

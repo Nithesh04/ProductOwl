@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaArrowLeft, FaExternalLinkAlt, FaRupeeSign, FaBell, FaTrash } from 'react-icons/fa';
 import TrackingModal from '../components/TrackingModal';
+import { productsAPI } from '../services/api';
 
 // Styled components
 const DetailContainer = styled.div`
@@ -186,26 +187,16 @@ const ProductDetail = ({ user }) => {
       try {
         setLoading(true);
         setError('');
-        
-        const token = localStorage.getItem('token');
-        const headers = {
-          'Content-Type': 'application/json',
-          ...(token && { 'Authorization': `Bearer ${token}` })
-        };
 
-        const response = await fetch(`/api/products/${id}`, { headers });
+        const response = await productsAPI.getById(id);
+        const data = response.data;
         
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-          throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
         if (!data?._id) throw new Error('Invalid product data received');
         
         setProduct(data);
       } catch (err) {
-        setError(err.message);
+        console.error('Fetch product error:', err);
+        setError(err.response?.data?.error || err.message || 'Failed to fetch product');
         setProduct(null);
       } finally {
         setLoading(false);
@@ -220,26 +211,14 @@ const ProductDetail = ({ user }) => {
 
     try {
       setDeleting(true);
-      const token = localStorage.getItem('token');
-      if (!token) throw new Error('Authentication required');
-
-      const res = await fetch(`/api/products/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to delete product');
-      }
-
+      
+      await productsAPI.delete(id);
+      
       alert('Product deleted successfully!');
       navigate('/');
     } catch (err) {
-      alert(`Error: ${err.message}`);
+      console.error('Delete product error:', err);
+      alert(`Error: ${err.response?.data?.error || err.message || 'Failed to delete product'}`);
     } finally {
       setDeleting(false);
     }

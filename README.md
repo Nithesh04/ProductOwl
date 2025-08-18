@@ -44,7 +44,7 @@ Demo
       #### JWT Secret for authentication
       JWT_SECRET=your_secure_jwt_secret_key
       
-      #### Frontend environment (in /client/.env)
+      #### Frontend environment (/client/.env)
       VITE_API_URL=http://localhost:5000/api
 
 

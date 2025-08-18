@@ -32,7 +32,7 @@ Demo
 
 <img width="1917" height="925" alt="Screenshot 2025-08-11 222513" src="https://github.com/user-attachments/assets/84abfe93-4f26-4e0c-97b7-2e8be608c7f5" />
 
-###.env file
+### Configuration
    
       #### MongoDB connection string
       MONGODB_URI=your_mongodb_connection_string_here
